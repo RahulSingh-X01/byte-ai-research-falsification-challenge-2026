@@ -6,6 +6,28 @@ Project: synthetic dataset, small MLP, testing whether apparent simplicity bias 
 
 ---
 
+
+
+## Notation
+
+| Symbol           | Meaning                                                                           |
+| ---------------- | --------------------------------------------------------------------------------- |
+| S                | Simple feature. Coordinate 0. Linear: sign(S) predicts the label.                 |
+| C                | Complex feature. Coordinate 1. k-slab: band parity predicts the label.            |
+| k                | Number of slabs in C. k=1 is linear (single threshold). Higher k is more complex. |
+| rho_S, rho_C     | Label noise rates for S and C. 0.0 = perfect predictor.                           |
+| mu_S, sigma_S    | Margin and Gaussian noise for S. Control optimization ease.                       |
+| alpha_S, alpha_C | Input scale multipliers for S and C. Used in Exp 3.                               |
+| R_S_shuffle      | Normalized reliance on S from shuffle ablation. 1 = only S, 0 = only C.           |
+| R_S_conflict     | Fraction of conflict samples where the model follows S.                           |
+| drop_S, drop_C   | Raw accuracy drop when S or C is shuffled on the test set.                        |
+| epochs_to_95     | First epoch where train accuracy reaches 0.95.                                    |
+| Reliance         | Which feature the model actually uses to make predictions.                        |
+
+---
+
+
+
 ## Dataset generator sanity check
 
 **Goal:** Verify the synthetic dataset generator produces features with the intended properties.
@@ -104,7 +126,7 @@ hidden=64x2 ReLU, Adam lr=1e-3, batch=128, 70/30 split.
 - Main experiments use MAX_EPOCHS=400.
 - Learning curves (reliance over training) are essential, not optional,
   because final reliance masks the phase transition.
-- Minimum 5 seeds for Exp 1-3.
+- Minimum 3 seeds for Exp 1-3.
 
 **Compute:** 62.9s for 9 runs (7.0s/run). Exp 1 (10 runs) ~70s.
 Exp 2 shrunk grid (135 runs) ~16 min. Exp 3 (~150 runs) ~18 min. Feasible.
